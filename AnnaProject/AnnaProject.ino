@@ -1,7 +1,7 @@
 #include "TRIGGER_WIFI.h"               
 #include "TRIGGER_GOOGLESHEETS.h"       
 
-String Sheets_GAS_ID = "AKfycbzm8XbSmxgvSs1JKH5TwMUOAsv4RCLlfak_EAH5IJXhOZ6KL5yi1w9hXcbIyD2jkYP2Gg";  
+String Sheets_GAS_ID = "AKfycbxwqez2dg8Aay5CxuQKObjF1FpS9XBl7OHnUdYBF7KTwk-FIwyU7eCJWA1s1DxlF-YDyw";  
 int No_of_Parameters = 1;                                          
 const int lm35_pin = A0;
 
@@ -10,7 +10,7 @@ void setup()
     Serial.begin(9600);
     while (!Serial);
 
-    WIFI_Connect("Manik","martand003");                                                     
+    WIFI_Connect("Ani","1234567890");                                                     
     Google_Sheets_Init(column_name_in_sheets, Sheets_GAS_ID, No_of_Parameters);         
 }
 

@@ -1,0 +1,46 @@
+function doGet(e) { 
+  Logger.log(JSON.stringify(e));  // View parameters
+  var result = 'Ok'; // Assume success
+  
+  if (typeof e.parameter === 'undefined') {
+    result = 'No Parameters';
+  } else {
+    var sheet_id = '1k9VHdh8dQYfFr_tTBO7PpfVRovvAXzqKjnm8eqfMcJc';  // Spreadsheet ID
+    var sheet = SpreadsheetApp.openById(sheet_id).getActiveSheet(); // Get active sheet
+    var newRow = sheet.getLastRow() + 1;						
+    var rowData = [];
+    var d = new Date();
+    
+    // Auto-incremental ID as a number
+    var id = (sheet.getLastRow() > 0) ? parseInt(sheet.getRange(sheet.getLastRow(), 1).getValue()) + 1 : 1;
+    rowData[0] = id; // ID in column A
+    rowData[1] = d.toLocaleTimeString(); // Time in column B
+    rowData[2] = d.toLocaleDateString(); // Date in column C
+    
+    for (var param in e.parameter) {
+      Logger.log('In for loop, param=' + param);
+      var value = stripQuotes(e.parameter[param]);
+      Logger.log(param + ':' + e.parameter[param]);
+      switch (param) {
+        case 'value1': // Parameter 1, it has to be updated in column D
+          rowData[3] = value; // Value in column D
+          result = 'Written on column D';
+          break;
+        default:
+          result = "unsupported parameter";
+      }
+    }
+    
+    Logger.log(JSON.stringify(rowData));
+    // Write new row below
+    var newRange = sheet.getRange(newRow, 1, 1, rowData.length);
+    newRange.setValues([rowData]);
+  }
+  
+  // Return result of operation
+  return ContentService.createTextOutput(result);
+}
+
+function stripQuotes(value) {
+  return value.replace(/^["']|['"]$/g, "");
+}
